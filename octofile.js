@@ -1,12 +1,11 @@
 function renderUser() {
   var UID = document.getElementById("username").value; 
-  var profile = "https://github.com/" + UID;
+  var profileURL = "https://github.com/" + UID;
   var languages = [];
   
-  $('.git-UID').html("<a href='" + profile + "'>" + UID + "</a>");
-
   //UID profile
-  $.getJSON("https://api.github.com/users/" + UID, function(ID){
+  var profile = $.getJSON("https://api.github.com/users/" + UID, function(ID){
+    $('.git-UID').html("<a href='" + profile + "'>" + UID + "</a>");
 
     avatar = ID.avatar_url;
     $('.git-avatar').html("<a href=" + profile + "><img src='" + avatar + "'></a>");
@@ -22,7 +21,11 @@ function renderUser() {
     if(ID.hireable) {
       $('.git-hireable').removeClass('git-hidden');
     }
-  });
+  })
+    .fail(function () {
+      clearAll();
+      $('.git-UID').html("<div>Error: Specified user does not exist.</div>");
+    });
 
   Array.prototype.byFrequency= function(){
     var idx, t = [], L = this.length, freq = {};
@@ -53,6 +56,15 @@ function renderUser() {
     languagesOutput = "Develops in " + languagesSorted[0] + ", " + languagesSorted[1] + ", and " + languagesSorted[2];
     $('.git-languages').html(languagesOutput)
   });
+}
+
+function clearAll() {
+  $('.git-UID').html("");
+  $('.git-avatar').html("");
+  $('.git-active').html("");
+  $('.git-repos').html("");
+  $('.git-hireable').html("");
+  $('.git-languages').html("");
 }
 
 document.addEventListener("keydown", function(event) {
