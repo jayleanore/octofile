@@ -1,5 +1,5 @@
-$(document).ready(function() {
-  var UID = 'mananshah99'; 
+function renderUser() {
+  var UID = document.getElementById("username").value; 
   var profile = "https://github.com/" + UID;
   var languages = [];
   
@@ -53,5 +53,12 @@ $(document).ready(function() {
     languagesOutput = "Develops in " + languagesSorted[0] + ", " + languagesSorted[1] + ", and " + languagesSorted[2];
     $('.git-languages').html(languagesOutput)
   });
+}
 
+document.addEventListener("keydown", function(event) {
+  switch(event.keyCode){
+    case 13:
+      renderUser();
+      break;
+  }
 });
